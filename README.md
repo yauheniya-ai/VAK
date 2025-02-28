@@ -1,2 +1,2 @@
 # VAK
-VAK Quiz
+Visual, Auditory, Kinesthetic (VAK) Quiz
