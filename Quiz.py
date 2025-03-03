@@ -149,7 +149,8 @@ if st.button("Quiz abschließen"):
             "Lernstil": ["Visuell", "Auditiv", "Kinästhetisch"], 
             "Anzahl": [counts["Visuell"], counts["Auditiv"], counts["Kinästhetisch"]]
         })
-
+        max_value = vak_df["Anzahl"].max()
+        y_max = max_value * 1.1
         fig = px.bar(
             vak_df, 
             x="Lernstil", 
@@ -162,7 +163,13 @@ if st.button("Quiz abschließen"):
 
         fig.update_traces(textposition="outside")
 
-        fig.update_layout(showlegend=False,  xaxis_title="",  yaxis_title="Anzahl")
+        fig.update_layout(
+            showlegend=False,  
+            xaxis_title="",  
+            yaxis_title="Anzahl",
+            yaxis_range=[0, y_max],
+            font=dict(size=20)
+        )
 
         # Show the chart in Streamlit
         st.plotly_chart(fig)

@@ -78,7 +78,9 @@ if not vak_results_data.empty:
     st.subheader(f"Lernstil-Präferenzen basierend auf allen Antworten")
     vak_counts = vak_results_data[['visual', 'auditory', 'kinesthetic']].sum()
     vak_df = pd.DataFrame({"Lernstil": ["Visuell", "Auditiv", "Kinästhetisch"], "Anzahl": vak_counts})
-    
+    max_value = vak_df["Anzahl"].max()
+    y_max = max_value * 1.1
+
     fig1 = px.bar(
         vak_df, 
         x="Lernstil", 
@@ -95,6 +97,7 @@ if not vak_results_data.empty:
         showlegend=False, 
         xaxis_title="", 
         yaxis_title="Anzahl",
+        yaxis_range=[0, y_max],
         font=dict(size=20)  # Größere Schriftgröße für Achsen & Labels
     )
 
@@ -116,14 +119,14 @@ if not vak_results_data.empty:
 
     # Vergrößere Prozentzahlen und Legende
     fig2.update_traces(
-        textposition="outside", 
-        textinfo="percent+label",
+        textposition="inside", 
+        textinfo="percent",
         textfont_size=20
     )
 
     # Vergrößere Legenden-Schriftgröße
     fig2.update_layout(
-        showlegend=False, 
+        showlegend=True, 
         annotations=[dict(
             text=f"Teilnehmer<br>{total_participants}", 
             x=0.5, y=0.5, 
