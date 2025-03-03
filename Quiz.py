@@ -1,5 +1,17 @@
 import streamlit as st
 import psycopg2
+import json
+import random
+import os
+import pandas as pd
+import plotly.express as px
+
+# Custom colors for each learning style
+custom_colors = {
+    "Visuell": "#5C16C1",   # Purple/Violet
+    "Auditiv": "#C7BFE3",   # Lavender
+    "Kinästhetisch": "#94E047"  # Lime
+}
 
 # Database connection from Streamlit secrets
 def get_db_connection():
@@ -10,93 +22,156 @@ def get_db_connection():
             user=secrets["username"],
             password=secrets["password"],
             host=secrets["host"],
-            port=secrets.get("port", "5432")  # Default PostgreSQL port
+            port=secrets.get("port", "5432")
         )
     except KeyError as e:
         st.error(f"Fehlende Datenbankkonfigurationswerte: {e}")
         st.stop()
 
-# VAK Quiz Questions in German
-QUESTIONS = [
-    {"question": "Wie lernst du am besten?", "options": ["Indem ich Bilder sehe", "Indem ich zuhöre", "Indem ich es selbst mache"]},
-    {"question": "Wenn du eine neue Fähigkeit lernst, bevorzugst du…", "options": ["Bilder oder Diagramme", "Erklärungen anhören", "Es ausprobieren"]},
-    {"question": "Wenn du eine Wegbeschreibung bekommst, ist es einfacher für dich…", "options": ["Eine Karte zu sehen", "Die Richtung zu hören", "Den Weg selbst zu gehen"]},
-    {"question": "Wenn du etwas Neues lernst, was hilft dir mehr?", "options": ["Visuelle Darstellungen", "Gesprochene Anweisungen", "Praktische Erfahrungen"]},
-    {"question": "Wie kannst du dir am besten eine Geschichte merken?", "options": ["Indem ich sie sehe", "Indem ich sie höre", "Indem ich sie nachspiele"]},
-    {"question": "Was hilft dir, Informationen besser zu behalten?", "options": ["Grafiken und Diagramme", "Audioaufnahmen und Erklärungen", "Selbst ausprobieren und Üben"]},
-    {"question": "Wenn du an einen Ort reist, was ist für dich am hilfreichsten?", "options": ["Ein Stadtplan", "Jemand, der dir den Weg beschreibt", "Die Umgebung selbst zu erkunden"]},
-    {"question": "Wie gehst du mit neuen Aufgaben um?", "options": ["Ich schaue mir Beispiele an", "Ich frage nach Erklärungen", "Ich versuche, es direkt zu tun"]},
-    {"question": "Wenn du versuchst, dich an etwas zu erinnern, wie gehst du vor?", "options": ["Ich visualisiere es", "Ich höre die Information nochmal", "Ich stelle es mir vor und tue es"]},
-    {"question": "Welche Methode bevorzugst du beim Erlernen von Sprachen?", "options": ["Bilder und Flashcards", "Hören von Gesprächen", "Sprechen und Üben"]},
-    {"question": "Welche Art von Anweisungen bevorzugst du?", "options": ["Visuelle Anleitungen", "Mündliche Erklärungen", "Praktische Übungen"]},
-    {"question": "Was hilft dir, dich an den Ablauf eines Ereignisses zu erinnern?", "options": ["Einen Zeitstrahl zu sehen", "Den Ablauf zu hören", "Den Ablauf selbst zu erleben"]},
-    {"question": "Wie lernst du am besten komplexe Informationen?", "options": ["Durch Diagramme und Visualisierungen", "Indem ich jemandem zuhöre", "Indem ich es ausprobiere"]},
-    {"question": "Wenn du dich auf eine Präsentation vorbereitest, was bevorzugst du?", "options": ["Visuelle Hilfsmittel wie Folien", "Den Vortrag zu hören", "Praktische Übungen"]},
-    {"question": "Wie gehst du mit einer neuen Aufgabe um, die du noch nie gemacht hast?", "options": ["Ich schaue mir ein Beispiel an", "Ich lasse mir die Schritte erklären", "Ich probiere es direkt aus"]},
-    {"question": "Welche Art von Lernumgebung bevorzugst du?", "options": ["Eine visuelle Umgebung mit vielen Bildern", "Eine ruhige, in der ich zuhören kann", "Eine Umgebung, in der ich aktiv sein kann"]},
-    {"question": "Wie behältst du Informationen, die du in einem Meeting gehört hast?", "options": ["Indem ich mir Notizen mache", "Indem ich den Inhalt noch einmal höre", "Indem ich die besprochenen Themen anwende"]},
-    {"question": "Was ist für dich der beste Weg, um Anweisungen zu verstehen?", "options": ["Die Anweisungen zu sehen", "Die Anweisungen zu hören", "Die Anweisungen selbst umzusetzen"]},
-    {"question": "Wie erinnerst du dich an den Verlauf eines Gesprächs?", "options": ["Durch visuelle Notizen", "Durch das Hören der gesprochenen Worte", "Durch das Nachspielen des Gesprächs"]},
-    {"question": "Was ist der effektivste Weg, für dich zu lernen?", "options": ["Indem ich es sehe", "Indem ich es höre", "Indem ich es tue"]},
-    {"question": "Wenn du dir etwas merken musst, wie tust du das am liebsten?", "options": ["Indem ich ein Bild vor meinem inneren Auge sehe", "Indem ich es laut wiederhole", "Indem ich es selbst erfahre"]},
-]
+# Load Questions from JSON
+def load_questions():
+    file_path = os.path.join("data", "questions.json")
+    with open(file_path, "r", encoding="utf-8") as file:
+        return json.load(file)
+
+# Load the questions
+QUESTIONS = load_questions()
+
+# Initialize session state for shuffled options (shuffled only once)
+if "shuffled_questions" not in st.session_state:
+    st.session_state.shuffled_questions = []
+    for q in QUESTIONS:
+        shuffled_options = random.sample(q["options"], len(q["options"]))  # Shuffle once
+        st.session_state.shuffled_questions.append({"question": q["question"], "options": shuffled_options})
+
+
+st.set_page_config(
+    page_title="VAK Lernstil-Quiz",
+    page_icon="assets/logo_1.png"
+)
+
+st.logo("assets/logo_1.png")
+
+st.sidebar.image("assets/Kinaesthetisch.gif")
 
 # Streamlit App
 st.title("VAK Lernstil-Quiz")
 st.image("assets/cover.png", use_container_width=True)
-st.write("Beantworte die folgenden 20 Fragen, um deinen bevorzugten Lernstil zu erfahren.")
+st.write("Beantworte die folgenden Fragen, indem du eine oder mehrere Antworten auswählst. **Jede Frage muss beantwortet werden.**")
 
 # Ask for user's name
 name = st.text_input("Bitte gib deinen Namen ein:")
-st.write(f"Dein Name: {name}") 
 
 responses = []
-for i, q in enumerate(QUESTIONS[:20]):
+user_answers = {}
+missing_questions = []  # Track unanswered questions
+
+# Mapping English learning styles to German
+style_mapping = {"Visual": "Visuell", "Auditory": "Auditiv", "Kinesthetic": "Kinästhetisch"}
+
+for i, q in enumerate(st.session_state.shuffled_questions):  # Use stored shuffled questions
     st.write(f"{i+1}. {q['question']}")
-    choice = st.radio("", q['options'], index=None, key=f"q{i}")
-    responses.append(choice)
+
+    selected_options = []  # Store checked answers for this question
+    
+    for option in q["options"]:
+        if st.checkbox(option["text"], key=f"q{i}_{option['text']}"):
+            selected_options.append(option["text"])
+    
+    if selected_options:
+        # Store selected answers
+        user_answers[q["question"]] = selected_options
+        
+        # Map selected answers to learning types
+        for option in q["options"]:
+            if option["text"] in selected_options:
+                mapped_type = style_mapping.get(option["type"], option["type"])  # Convert to German
+                responses.append(mapped_type)
+    else:
+        missing_questions.append(i + 1)  # Store missing question number
 
 if st.button("Quiz abschließen"):
     if not name:
-        st.warning("Bitte gib deinen Namen ein.")
-    elif None in responses:
-        st.warning("Bitte wähle eine Antwort für jede Frage.")
+        st.warning("⚠️ Bitte gib deinen Namen ein.")
+    elif missing_questions:
+        missing_str = ", ".join(map(str, missing_questions))
+        st.warning(f"⚠️ Bitte beantworte alle Fragen. Du hast die folgenden Fragen übersprungen: **{missing_str}**.")
     else:
-        # Initialize counts for each style
-        visual = 0
-        auditory = 0
-        kinesthetic = 0
-
-        # Count learning styles based on the index of the selected answers
-        for i, response in enumerate(responses):
-            if i % 3 == 0:  # First option is Visual
-                visual += 1
-            elif i % 3 == 1:  # Second option is Auditory
-                auditory += 1
-            elif i % 3 == 2:  # Third option is Kinesthetic
-                kinesthetic += 1
-
-        # Determine dominant style
-        result = max([(visual, "Visuell"), (auditory, "Auditiv"), (kinesthetic, "Kinästhetisch")], key=lambda x: x[0])
-        st.success(f"{name}, dein bevorzugter Lernstil ist: {result[1]}")
+        # Initialize counts for each learning style
+        counts = {"Visuell": 0, "Auditiv": 0, "Kinästhetisch": 0}
         
+        for response in responses:
+            if response in counts:  # Ensure valid response before updating
+                counts[response] += 1
+        
+        # Find the highest score
+        max_count = max(counts.values())
+
+        # Find all dominant learning styles (handle ties)
+        dominant_styles = [style for style, count in counts.items() if count == max_count]
+
+        # Format the result correctly in German
+        if len(dominant_styles) == 1:
+            result_text = dominant_styles[0]
+        elif len(dominant_styles) == 2:
+            result_text = f"{dominant_styles[0]}-{dominant_styles[1]}"
+        else:
+            result_text = f"{dominant_styles[0]}-{dominant_styles[1]}-{dominant_styles[2]}"
+
+        st.success(f"{name}, dein bevorzugter Lernstil ist: **{result_text}**.")
+
         # Save to database
         try:
             conn = get_db_connection()
             cur = conn.cursor()
             
-            # Ensure all responses are inserted into the database
-            for i, response in enumerate(responses):
-                cur.execute("INSERT INTO vak_responses (name, question, answer) VALUES (%s, %s, %s)",
-                            (name, QUESTIONS[i]['question'], response))
+            # Save user responses
+            for question, selected in user_answers.items():
+                cur.execute(
+                    "INSERT INTO vak_responses (name, question, answer) VALUES (%s, %s, %s)",
+                    (name, question, ", ".join(selected))
+                )
             
-            # Save the counts for visual, auditory, kinesthetic
-            cur.execute("INSERT INTO vak_results (name, visual, auditory, kinesthetic, result) VALUES (%s, %s, %s, %s, %s)",
-                        (name, visual, auditory, kinesthetic, result[1]))
+            # Save learning style result
+            cur.execute(
+                "INSERT INTO vak_results (name, visual, auditory, kinesthetic, result) VALUES (%s, %s, %s, %s, %s)",
+                (name, counts["Visuell"], counts["Auditiv"], counts["Kinästhetisch"], result_text)
+            )
             
             conn.commit()
             cur.close()
             conn.close()
-            st.write("Ergebnis wurde gespeichert.")
         except Exception as e:
-            st.error(f"Fehler beim Speichern: {e}")
+            st.error(f"❌ Fehler beim Speichern: {e}")
+
+# --- Generate Plotly Bar Chart (Säulendiagramm) ---
+        vak_df = pd.DataFrame({
+            "Lernstil": ["Visuell", "Auditiv", "Kinästhetisch"], 
+            "Anzahl": [counts["Visuell"], counts["Auditiv"], counts["Kinästhetisch"]]
+        })
+
+        fig = px.bar(
+            vak_df, 
+            x="Lernstil", 
+            y="Anzahl", 
+            title=f"Lernstil-Auswertung für {name}", 
+            color="Lernstil",
+            text="Anzahl",
+            color_discrete_map=custom_colors
+        )
+
+        fig.update_traces(textposition="outside")
+
+        fig.update_layout(showlegend=False,  xaxis_title="",  yaxis_title="Anzahl")
+
+        # Show the chart in Streamlit
+        st.plotly_chart(fig)
+
+        # Provide a download button for the chart
+        st.download_button(
+            label="📥 Diagramm herunterladen",
+            data=fig.to_image(format="png"),
+            file_name=f"Lernstil_Auswertung_{name}.png",
+            mime="image/png"
+        )
+

@@ -1,0 +1,162 @@
+[
+    {
+        "question": "Wie lernst du am besten?",
+        "options": [
+            {"text": "Indem ich Bilder sehe", "type": "Visual"},
+            {"text": "Indem ich zuhöre", "type": "Auditory"},
+            {"text": "Indem ich es selbst mache", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wenn du eine neue Fähigkeit lernst, bevorzugst du…",
+        "options": [
+            {"text": "Bilder oder Diagramme", "type": "Visual"},
+            {"text": "Erklärungen anhören", "type": "Auditory"},
+            {"text": "Es ausprobieren", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wenn du eine Wegbeschreibung bekommst, ist es einfacher für dich…",
+        "options": [
+            {"text": "Eine Karte zu sehen", "type": "Visual"},
+            {"text": "Die Richtung zu hören", "type": "Auditory"},
+            {"text": "Den Weg selbst zu gehen", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wenn du eine neue Idee verstehst, hilft es dir mehr…",
+        "options": [
+            {"text": "Ein Diagramm oder eine Mindmap zu sehen", "type": "Visual"},
+            {"text": "Eine mündliche Erklärung zu hören", "type": "Auditory"},
+            {"text": "Die Idee praktisch anzuwenden", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wie kannst du dir eine Geschichte am besten merken?",
+        "options": [
+            {"text": "Indem ich sie mir als Bilder vorstelle", "type": "Visual"},
+            {"text": "Indem ich sie höre oder erzähle", "type": "Auditory"},
+            {"text": "Indem ich sie nachspiele", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Was hilft dir, Informationen besser zu behalten?",
+        "options": [
+            {"text": "Grafiken und Diagramme", "type": "Visual"},
+            {"text": "Erklärungen laut anhören", "type": "Auditory"},
+            {"text": "Durch praktische Erfahrung", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wenn du an einen neuen Ort reist, was hilft dir am meisten?",
+        "options": [
+            {"text": "Ein Stadtplan oder eine Karte", "type": "Visual"},
+            {"text": "Eine verbale Wegbeschreibung", "type": "Auditory"},
+            {"text": "Selbst den Weg erkunden", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wie gehst du mit neuen Aufgaben um?",
+        "options": [
+            {"text": "Ich schaue mir Beispiele an", "type": "Visual"},
+            {"text": "Ich frage nach Erklärungen", "type": "Auditory"},
+            {"text": "Ich versuche es direkt selbst", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wenn du versuchst, dich an etwas zu erinnern, wie gehst du vor?",
+        "options": [
+            {"text": "Ich stelle mir ein Bild davon vor", "type": "Visual"},
+            {"text": "Ich sage es mir innerlich vor", "type": "Auditory"},
+            {"text": "Ich stelle es mir vor und handle danach", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Welche Methode bevorzugst du beim Erlernen von Sprachen?",
+        "options": [
+            {"text": "Bilder, Flashcards oder schriftliche Übungen", "type": "Visual"},
+            {"text": "Gespräche und Sprachaufnahmen", "type": "Auditory"},
+            {"text": "Sprachspiele und praktische Anwendungen", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Welche Art von Anweisungen ist für dich am hilfreichsten?",
+        "options": [
+            {"text": "Schriftliche oder visuelle Anleitungen", "type": "Visual"},
+            {"text": "Mündliche Erklärungen", "type": "Auditory"},
+            {"text": "Direktes Vorzeigen oder Mitmachen", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wie lernst du am besten komplexe Informationen?",
+        "options": [
+            {"text": "Durch Diagramme, Infografiken oder Notizen", "type": "Visual"},
+            {"text": "Durch Zuhören oder Diskussionen", "type": "Auditory"},
+            {"text": "Durch das direkte Anwenden des Wissens", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wenn du eine Präsentation vorbereitest, wie gehst du vor?",
+        "options": [
+            {"text": "Ich erstelle visuelle Hilfsmittel wie Folien", "type": "Visual"},
+            {"text": "Ich übe meinen Vortrag laut", "type": "Auditory"},
+            {"text": "Ich simuliere die Präsentation mit Bewegungen", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wenn du ein neues Gerät benutzt, was machst du zuerst?",
+        "options": [
+            {"text": "Ich lese die Anleitung", "type": "Visual"},
+            {"text": "Ich höre mir Erklärungen dazu an", "type": "Auditory"},
+            {"text": "Ich probiere es direkt aus", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wie behältst du Informationen aus Meetings oder Vorträgen am besten?",
+        "options": [
+            {"text": "Indem ich Notizen mache", "type": "Visual"},
+            {"text": "Indem ich den Vortrag noch einmal höre", "type": "Auditory"},
+            {"text": "Indem ich die besprochenen Inhalte praktisch anwende", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wie lernst du am besten ein neues Lied?",
+        "options": [
+            {"text": "Indem ich mir die Noten oder Songtexte anschaue", "type": "Visual"},
+            {"text": "Indem ich es mehrmals höre", "type": "Auditory"},
+            {"text": "Indem ich es singe oder ein Instrument spiele", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Was ist für dich der beste Weg, um Anweisungen zu verstehen?",
+        "options": [
+            {"text": "Die Anweisungen als Text lesen", "type": "Visual"},
+            {"text": "Die Anweisungen hören", "type": "Auditory"},
+            {"text": "Die Anweisungen direkt umsetzen", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wenn du dich an den Verlauf eines Gesprächs erinnern musst, wie machst du das?",
+        "options": [
+            {"text": "Ich stelle mir eine Szene aus dem Gespräch vor", "type": "Visual"},
+            {"text": "Ich wiederhole die Worte, die gesagt wurden", "type": "Auditory"},
+            {"text": "Ich spiele das Gespräch innerlich nach", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wie merkst du dir Dinge am einfachsten?",
+        "options": [
+            {"text": "Ich stelle mir ein Bild davon vor", "type": "Visual"},
+            {"text": "Ich spreche es laut oder höre es mir an", "type": "Auditory"},
+            {"text": "Ich mache eine Bewegung oder Geste dazu", "type": "Kinesthetic"}
+        ]
+    },
+    {
+        "question": "Wie bereitest du dich auf eine praktische Prüfung oder Vorführung vor?",
+        "options": [
+            {"text": "Ich sehe mir Demonstrationen oder Videos an", "type": "Visual"},
+            {"text": "Ich höre mir Anweisungen und Tipps an", "type": "Auditory"},
+            {"text": "Ich übe die Bewegung oder Aufgabe praktisch", "type": "Kinesthetic"}
+        ]
+    }
+]
